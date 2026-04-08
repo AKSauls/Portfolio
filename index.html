@@ -1,129 +1,547 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andrew Sauls | Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Andrew Sauls | Cybersecurity</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0c0f;
+            --surface: #111318;
+            --surface2: #181c24;
+            --border: #1e2530;
+            --accent: #00e5ff;
+            --accent2: #7c3aed;
+            --accent3: #10b981;
+            --text: #e2e8f0;
+            --muted: #64748b;
+            --mono: 'Space Mono', monospace;
+            --sans: 'Syne', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.4;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(10,12,15,0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px; height: 56px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-brand { font-family: var(--mono); font-size: 13px; color: var(--accent); letter-spacing: 0.1em; }
+        .nav-brand span { color: var(--muted); }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { font-family: var(--mono); font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent); }
+
+        #hero { min-height: 100vh; display: flex; align-items: center; padding: 100px 40px 60px; position: relative; overflow: hidden; }
+        .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px); background-size: 60px 60px; }
+        .hero-glow { position: absolute; top: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%); pointer-events: none; }
+        .hero-glow2 { position: absolute; bottom: -10%; left: 20%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(0,229,255,0.06) 0%, transparent 70%); pointer-events: none; }
+        .hero-content { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+
+        .hero-tag { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+        .hero-tag::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent); }
+
+        h1.hero-name { font-family: var(--sans); font-size: clamp(52px, 8vw, 96px); font-weight: 800; line-height: 1; letter-spacing: -0.03em; margin-bottom: 16px; }
+        .hero-name .last { color: var(--accent); }
+
+        .hero-title { font-family: var(--mono); font-size: 14px; color: var(--muted); margin-bottom: 32px; letter-spacing: 0.05em; }
+        .blink { display: inline-block; width: 8px; height: 14px; background: var(--accent); margin-left: 4px; animation: blink 1s step-end infinite; vertical-align: middle; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        .hero-desc { max-width: 540px; color: var(--muted); font-size: 16px; line-height: 1.7; margin-bottom: 40px; }
+        .hero-ctas { display: flex; gap: 16px; flex-wrap: wrap; }
+
+        .btn-primary { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bg); background: var(--accent); border: none; padding: 12px 28px; text-decoration: none; display: inline-block; transition: all 0.2s; clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%); }
+        .btn-primary:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,255,0.3); }
+
+        .btn-secondary { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); background: transparent; border: 1px solid rgba(0,229,255,0.3); padding: 12px 28px; text-decoration: none; display: inline-block; transition: all 0.2s; }
+        .btn-secondary:hover { border-color: var(--accent); background: rgba(0,229,255,0.05); transform: translateY(-2px); }
+
+        .status-badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 11px; color: var(--accent3); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); padding: 6px 14px; border-radius: 2px; margin-bottom: 32px; }
+        .status-dot { width: 6px; height: 6px; background: var(--accent3); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(16,185,129,0.4); } 50% { opacity:0.7; box-shadow: 0 0 0 6px rgba(16,185,129,0); } }
+
+        .section { padding: 100px 40px; max-width: 1000px; margin: 0 auto; }
+        .section-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+        .section-title { font-size: clamp(28px, 4vw, 40px); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 48px; }
+
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+        .about-text p { color: var(--muted); line-height: 1.8; font-size: 16px; margin-bottom: 16px; }
+
+        .cert-stack { display: flex; flex-direction: column; gap: 12px; }
+        .cert-item { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .cert-name { font-family: var(--mono); font-size: 13px; color: var(--text); }
+        .cert-status { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; padding: 3px 8px; }
+        .cert-status.earned { color: var(--accent3); background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2); }
+        .cert-status.progress { color: var(--accent); background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.2); }
+
+        #experience { background: var(--surface); padding: 0; }
+        .exp-list { display: flex; flex-direction: column; gap: 2px; }
+        .exp-card { background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--border); padding: 32px 36px; transition: border-color 0.2s; }
+        .exp-card:hover { border-left-color: var(--accent); }
+        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 24px; margin-bottom: 6px; flex-wrap: wrap; }
+        .exp-role { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+        .exp-date { font-family: var(--mono); font-size: 11px; color: var(--accent); background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.15); padding: 4px 10px; white-space: nowrap; align-self: start; }
+        .exp-company { font-family: var(--mono); font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+        .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .exp-bullets li { color: var(--muted); font-size: 14px; line-height: 1.7; padding-left: 20px; position: relative; }
+        .exp-bullets li::before { content: '›'; position: absolute; left: 0; color: var(--accent); font-size: 16px; line-height: 1.5; }
+        .exp-bullets li strong { color: var(--text); font-weight: 600; }
+
+        .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; background: var(--border); }
+        .skill-panel { background: var(--surface); padding: 28px 32px; }
+        .skill-panel-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .skill-panel-icon { width: 32px; height: 32px; background: rgba(0,229,255,0.1); border: 1px solid rgba(0,229,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .skill-panel h3 { font-family: var(--sans); font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+        .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .skill-tag { font-family: var(--mono); font-size: 11px; color: var(--muted); background: var(--surface2); border: 1px solid var(--border); padding: 5px 10px; letter-spacing: 0.05em; transition: all 0.2s; }
+        .skill-tag:hover { color: var(--accent); border-color: rgba(0,229,255,0.3); }
+
+        .projects-list { display: flex; flex-direction: column; gap: 2px; }
+        .project-card { background: var(--surface); border: 1px solid var(--border); border-left: none; padding: 28px 32px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start; position: relative; transition: all 0.2s; overflow: hidden; }
+        .project-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--border); transition: background 0.2s; }
+        .project-card:hover::before { background: var(--accent); }
+        .project-card:hover { border-color: rgba(0,229,255,0.15); }
+        .project-num { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 8px; }
+        .project-card h3 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 10px; }
+        .project-card p { color: var(--muted); font-size: 14px; line-height: 1.7; }
+        .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+        .project-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; }
+        .tag-blue { color: var(--accent); background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.15); }
+        .tag-purple { color: #a78bfa; background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); }
+        .tag-green { color: var(--accent3); background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.15); }
+        .wip-badge { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; white-space: nowrap; align-self: start; }
+
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+        .contact-text p { color: var(--muted); font-size: 16px; line-height: 1.8; margin-bottom: 24px; }
+        .contact-links { display: flex; flex-direction: column; gap: 12px; }
+        .contact-link { display: flex; align-items: center; gap: 16px; padding: 16px 20px; background: var(--surface); border: 1px solid var(--border); text-decoration: none; transition: all 0.2s; }
+        .contact-link:hover { border-color: rgba(0,229,255,0.3); background: rgba(0,229,255,0.03); transform: translateX(4px); }
+        .contact-link-icon { width: 36px; height: 36px; background: rgba(0,229,255,0.08); border: 1px solid rgba(0,229,255,0.15); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .contact-link-info { flex: 1; }
+        .contact-link-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+        .contact-link-value { font-size: 14px; color: var(--text); font-family: var(--mono); }
+        .contact-link-arrow { color: var(--muted); font-size: 16px; transition: transform 0.2s, color 0.2s; }
+        .contact-link:hover .contact-link-arrow { transform: translateX(4px); color: var(--accent); }
+
+        .terminal { background: #0d1117; border: 1px solid var(--border); font-family: var(--mono); }
+        .terminal-bar { background: var(--surface2); padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); }
+        .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .term-dot.r { background: #ef4444; }
+        .term-dot.y { background: #f59e0b; }
+        .term-dot.g { background: #10b981; }
+        .terminal-body { padding: 20px; font-size: 13px; line-height: 1.9; }
+        .term-line { color: var(--muted); }
+        .term-prompt { color: var(--accent); }
+        .term-cmd { color: var(--text); }
+        .term-out { color: var(--accent3); }
+        .term-comment { color: #4a5568; }
+
+        footer { border-top: 1px solid var(--border); padding: 24px 40px; display: flex; align-items: center; justify-content: space-between; }
+        .footer-left { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+        .footer-right { font-family: var(--mono); font-size: 11px; color: var(--border); }
+
+        .fade-in { opacity: 0; transform: translateY(20px); animation: fadeIn 0.6s ease forwards; }
+        @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in:nth-child(4) { animation-delay: 0.4s; }
+        .fade-in:nth-child(5) { animation-delay: 0.5s; }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; }
+            #hero { padding: 80px 24px 48px; }
+            .section { padding: 64px 24px; }
+            .about-grid, .skills-grid, .contact-grid { grid-template-columns: 1fr; }
+            .exp-header { flex-direction: column; }
+            footer { flex-direction: column; gap: 8px; text-align: center; }
+        }
+    </style>
 </head>
 <body>
 
-    <header>
-        <h1>Andrew Sauls</h1>
-        <p>Cybersecurity | DLP | InfoSec | Wannabe SOC analyst</p>
-    </header>
+    <nav>
+        <div class="nav-brand"><span>~/</span>andrew-sauls</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-grid"></div>
+        <div class="hero-glow"></div>
+        <div class="hero-glow2"></div>
+        <div class="hero-content">
+            <div class="status-badge fade-in">
+                <div class="status-dot"></div>
+                Threat Intelligence Analyst II · SOC Analyst · Open to opportunities
+            </div>
+            <div class="hero-tag fade-in">Cybersecurity Portfolio</div>
+            <h1 class="hero-name fade-in">Andrew<br><span class="last">Sauls</span></h1>
+            <p class="hero-title fade-in">Threat Intel · Blue Team · OSINT · SOC<span class="blink"></span></p>
+            <p class="hero-desc fade-in">Cybersecurity professional working in threat intelligence and SOC operations while completing a B.S. in Cybersecurity at Wichita State University. I track adversaries, triage alerts, and turn raw intel into actionable insights.</p>
+            <div class="hero-ctas fade-in">
+                <a href="#experience" class="btn-primary">View Experience</a>
+                <a href="#contact" class="btn-secondary">Get In Touch</a>
+            </div>
+        </div>
+    </section>
 
     <section id="about">
-        <h2>About Me</h2>
-        <p>Welcome to my personal website!  I am attending Wichita State University for a B.S. in Cybersecurity and a minor in Computer Sciecne and I am set to gradute May 2026. I am a cybersecurity professional focusing on Blue Teaming, OSINT, and Security Compliance. Currently I am working on getting my CySA+ while also working on my THM SAL1!</p>
+        <div class="section">
+            <div class="section-label">01 · Background</div>
+            <h2 class="section-title">About Me</h2>
+            <div class="about-grid">
+                <div class="about-text">
+                    <p>I'm a Cybersecurity student at Wichita State University finishing a B.S. with a Computer Science minor (May 2026), while working full-time in threat intelligence and SOC operations.</p>
+                    <p>At DarkTower I hunt adversaries across dark web marketplaces, Telegram channels, and underground forums. At NIAR I triage ~50 alerts per shift using Swimlane SOAR, Splunk, and SentinelOne EDR.</p>
+                    <p>I'm passionate about turning noisy data into clear, actionable intelligence — whether that's an incident report, a PIR, or a client briefing.</p>
+                </div>
+                <div class="cert-stack">
+                    <div class="cert-item">
+                        <span class="cert-name">CompTIA Security+</span>
+                        <span class="cert-status earned">✓ Feb 2026</span>
+                    </div>
+                    <div class="cert-item">
+                        <span class="cert-name">CompTIA CySA+</span>
+                        <span class="cert-status progress">⟳ May 2026</span>
+                    </div>
+                    <div class="cert-item">
+                        <span class="cert-name">WSU B.S. Cybersecurity</span>
+                        <span class="cert-status progress">⟳ May 2026</span>
+                    </div>
+                    <div class="cert-item">
+                        <span class="cert-name">Minor in Computer Science</span>
+                        <span class="cert-status progress">⟳ May 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="accolades">
-        <h2>Accolades & Achievements</h2>
-        <ul>
-			 <li> Cybersecurity Student at Wichita State University</li>
-            <li> Engineering Senator representing the interests of engineering students</li>
-            <li> Automated and generated thousands of Tenable Vulnerability Reference documents</li>
-            <li> Finished in the **Top 10%** of the Cyber Skyline 2024 Fall Individual Game and **Top 5%** in the Team Game</li>
-            <li> Experienced in **NIST 800-171**, with hands-on experience creating policy, process, and procedure documents</li>
-			<li> CompTIA Security+ Febuary 2026! </li>
-			<li>  CySA+ (Expected May 2026) </li> 
-        </ul>
+    <section id="experience">
+        <div class="section">
+            <div class="section-label">02 · Work History</div>
+            <h2 class="section-title">Experience</h2>
+            <div class="exp-list">
+
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <div>
+                            <div class="exp-role">Threat Intelligence Analyst II</div>
+                            <div class="exp-company">DarkTower · Remote, KS</div>
+                        </div>
+                        <span class="exp-date">Jun 2025 – Present</span>
+                    </div>
+                    <ul class="exp-bullets">
+                        <li>Conduct <strong>OSINT-driven investigations</strong> across dark web marketplaces, Telegram channels, and underground forums to identify adversary activity targeting client environments.</li>
+                        <li>Monitor and track <strong>fraud campaigns against North American financial institutions</strong>, identifying phishing, vishing, brand impersonation, and social engineering activity.</li>
+                        <li>Analyze threat actor infrastructure — spoofed domains, malicious scripts, credential harvesting operations — to assess campaign attribution, delivery methods, and client impact.</li>
+                        <li>Monitor <strong>100+ ransomware groups</strong> in near real-time, producing rapid intelligence briefs and alerts to reduce client exposure to emerging threats.</li>
+                        <li>Assessed <strong>~400 groups</strong> and reported on Iranian-aligned cyber and physical threat activity including DDoS campaigns and infrastructure targeting.</li>
+                        <li>Produce intelligence reports, RFIs, and PIRs — translating threat activity, fraud trends, and IOCs into clear, client-ready summaries.</li>
+                    </ul>
+                </div>
+
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <div>
+                            <div class="exp-role">Security Operations Center Analyst</div>
+                            <div class="exp-company">National Institute of Aviation Research · Wichita, KS</div>
+                        </div>
+                        <span class="exp-date">Feb 2025 – Present</span>
+                    </div>
+                    <ul class="exp-bullets">
+                        <li>Monitor enterprise security telemetry using <strong>Swimlane SOAR, Splunk, and SentinelOne EDR</strong> to detect suspicious behavior and support incident response.</li>
+                        <li>Perform endpoint, identity, and access investigations using SentinelOne, Duo Admin, and ThreatLocker to identify anomalous authentication and potential policy violations.</li>
+                        <li>Use SentinelOne EDR to analyze process trees, quarantine malicious files, kill suspicious processes, and coordinate remediation with clients and users.</li>
+                        <li>Maintain a high-volume alert triage workflow, averaging <strong>~50 alerts per shift</strong> — authentication anomalies, abnormal RDP usage, suspicious file executions, and lateral movement indicators.</li>
+                        <li>Support continuous improvement by identifying false positives, recommending alert tuning, and communicating recurring threat patterns to engineering teams.</li>
+                    </ul>
+                </div>
+
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <div>
+                            <div class="exp-role">IT Security Specialist</div>
+                            <div class="exp-company">National Institute of Aviation Research · Wichita, KS</div>
+                        </div>
+                        <span class="exp-date">Jan 2024 – Feb 2026</span>
+                    </div>
+                    <ul class="exp-bullets">
+                        <li>Created and organized over <strong>9,500 Tenable reference documents</strong> to streamline vulnerability management and improve accessibility for the IT department.</li>
+                        <li>Automated <strong>60% of manual documentation</strong> with custom VBScripts, reducing documentation processing time by several weeks per audit cycle.</li>
+                        <li>Conducted IT security audits and enforced <strong>CMMC and NIST SP 800-171</strong> guidelines, contributing to documentation for all 14 NIST 800-171 control families.</li>
+                        <li>Developed custom scripts to auto-apply <strong>CUI labels</strong> to .docx, .ppt, .xlsx, and .pdf files, enabling consistent DLP across networked documents.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
     </section>
 
-   <section id="projects">
-    <h2>Projects</h2>
-    <div class="project">
-        <h3> Home Soc lab</h3>
-        <p> Built and maintined a home SOC using a host machine, ubuntu 22, ubuntu server and a windows virtual machine. Integrated tools such as Tshark, Zeek and Suricata. Learned how to use command line for log analysis to build my skills as a SOC analyst.</p>
-    </div>
-	 <div class="project"> 
-		 <h3> Badusb sciprts</h3>
-		 	<p> Created multple badusb scripts for my flipper zero. The current one I am wodrking on is to copy the windows picture directory and copy it to a usb connected to the mahchine. I learned how easy it is for attackers to steal data from an opened machine and also the process to do so.</p>
-       <div class="project">
-    <h3> Microsoft DLP Research</h3>
-    <p>Studied the impact of Microsoft DLP on file metadata and encryption controls. Gained hands-on experience configuring DLP policies to enforce data protection rules across various file types, including DOCX, XLSX, PowerPoint presentations, and PDFs. I created mutlpie VB scripts to add metadata and labels to files in mass amounts.</p>
-</div>
-		 <div class="project">
-			 <h3> Tryhackme Pen Test Labs</h3>
-			 <p>Completed and recorded multiple labs from Tryhackme in order to build up skills in red teaming along with report writting.</p>
-		 </div>
-		 <div class="project">
-			 <h3>Web Application Security Testing Projec</h3>
-			 <p>Conducted hands-on security testing using OWASP Juice Shop and WebGoat to identify and exploit common web application vulnerabilities with OWASP Top 10 issues such as SQL injection, XSS, broken authentication, and security misconfigurations.</p>
-		 </div>
-	<div class="project">
-		<h3>Independent Threat Intel  </h3>
-		<p> Work in progress </p>
-	</div>
-<p></p>
-	</div>
-<section id="skills">
-    <h2>Technical Skills</h2>
-    <div class="skills-container">
-        <div class="skill-category">
-            <h3>Cloud & Security</h3>
-            <ul>
-                <li>Entra logs</li>
-                <li>Splunk</li>
-                <li>KnowBe4</li>
-                <li>Microsoft DLP</li>
-				<li>NIST framework</li>
-            </ul>
+    <section id="skills">
+        <div class="section">
+            <div class="section-label">03 · Technical Skills</div>
+            <h2 class="section-title">Capabilities</h2>
+            <div class="skills-grid">
+                <div class="skill-panel">
+                    <div class="skill-panel-header">
+                        <div class="skill-panel-icon">🔍</div>
+                        <h3>Threat Intel & OSINT</h3>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">MITRE ATT&CK</span>
+                        <span class="skill-tag">Dark Web OSINT</span>
+                        <span class="skill-tag">IOC Analysis</span>
+                        <span class="skill-tag">RFI / PIR Writing</span>
+                        <span class="skill-tag">Fraud Monitoring</span>
+                        <span class="skill-tag">Attribution</span>
+                    </div>
+                </div>
+                <div class="skill-panel">
+                    <div class="skill-panel-header">
+                        <div class="skill-panel-icon">🛡️</div>
+                        <h3>SOC & Security Tools</h3>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Splunk</span>
+                        <span class="skill-tag">SentinelOne EDR</span>
+                        <span class="skill-tag">Swimlane SOAR</span>
+                        <span class="skill-tag">Microsoft Defender</span>
+                        <span class="skill-tag">Wireshark</span>
+                        <span class="skill-tag">FTK Imager</span>
+                        <span class="skill-tag">Azure</span>
+                        <span class="skill-tag">Tenable</span>
+                    </div>
+                </div>
+                <div class="skill-panel">
+                    <div class="skill-panel-header">
+                        <div class="skill-panel-icon">💻</div>
+                        <h3>Programming & Scripting</h3>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">PowerShell</span>
+                        <span class="skill-tag">VBScript</span>
+                        <span class="skill-tag">Bash</span>
+                        <span class="skill-tag">AutoIT</span>
+                        <span class="skill-tag">C++</span>
+                    </div>
+                </div>
+                <div class="skill-panel">
+                    <div class="skill-panel-header">
+                        <div class="skill-panel-icon">📋</div>
+                        <h3>Compliance & Networking</h3>
+                    </div>
+                    <div class="skill-tags">
+                        <span class="skill-tag">NIST 800-171</span>
+                        <span class="skill-tag">CMMC</span>
+                        <span class="skill-tag">DLP</span>
+                        <span class="skill-tag">Log Analysis</span>
+                        <span class="skill-tag">Networking</span>
+                        <span class="skill-tag">Linux CLI</span>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="skill-category">
-            <h3>Programming & Scripting</h3>
-            <ul>
-                <li>C++</li>
-                <li>PowerShell</li>
-                <li>VB Script</li>
-                <li>Python Script</li>
-                <li>AutoIT</li>
-            </ul>
-        </div>
-        <div class="skill-category">
-            <h3>Networking & Tools</h3>
-            <ul>
-                <li>Linux Command Line</li>
-                <li>MySQL</li>
-                <li>Cisco Packet Tracer</li>
-                <li>WireShark</li>
-            </ul>
-        </div>
-        <div class="skill-category">
-            <h3>IT & Productivity</h3>
-            <ul>
-				<li>Report Writting</li>
-                <li>OSINT</li>
-                <li>Microsoft Office</li>
-                <li>Excel</li>
-            </ul>
-        </div>
-    </div>
-</section>
+    </section>
 
+    <section id="projects" style="background: var(--surface); padding: 0;">
+        <div class="section">
+            <div class="section-label">04 · Work</div>
+            <h2 class="section-title">Projects</h2>
+            <div class="projects-list">
 
+                <div class="project-card">
+                    <div>
+                        <div class="project-num">PROJECT_01</div>
+                        <h3>Home SOC Lab</h3>
+                        <p>Designed and maintained a home SOC environment using Ubuntu and Windows systems to simulate attacker and defender environments. Configured Zeek for network monitoring, Suricata IDS rules, and Wireshark packet capture. Ran attack simulations with Nmap to generate real alerts for analysis and investigation.</p>
+                        <div class="project-tags">
+                            <span class="project-tag tag-blue">Zeek</span>
+                            <span class="project-tag tag-blue">Suricata</span>
+                            <span class="project-tag tag-blue">Wireshark</span>
+                            <span class="project-tag tag-blue">Nmap</span>
+                            <span class="project-tag tag-green">Blue Team</span>
+                        </div>
+                    </div>
+                </div>
 
-	
-	
-	 <section id="contact">
-        <h2>Contact Me</h2>
-        <p> Email: <a href="mailto:andrewsauls04@gmail.com">andrewsauls04@gmail.com</a></p>
-        <p> LinkedIn: <a href="https://www.linkedin.com/in/andrew-sauls/" target="_blank">www.linkedin.com/in/andrew-sauls</a></p>
-        <p> GitHub: <a href="https://github.com/AKSauls" target="_blank">github.com/AKSauls</a></p>
+                <div class="project-card">
+                    <div>
+                        <div class="project-num">PROJECT_02</div>
+                        <h3>Windows Digital Forensics Investigation</h3>
+                        <p>Conducted a forensic investigation of a Windows disk image using FTK Imager, analyzing NTFS artifacts, registry data, and user files to identify unauthorized access to sensitive financial records. Investigated Event IDs 4624 and 1149 to detect Remote Desktop authentication from an external IP, reconstructing a full timeline of activity and insider threat indicators.</p>
+                        <div class="project-tags">
+                            <span class="project-tag tag-blue">FTK Imager</span>
+                            <span class="project-tag tag-blue">NTFS Forensics</span>
+                            <span class="project-tag tag-blue">Windows Logs</span>
+                            <span class="project-tag tag-green">DFIR</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div>
+                        <div class="project-num">PROJECT_03</div>
+                        <h3>Microsoft DLP Research</h3>
+                        <p>Studied the impact of Microsoft DLP on file metadata and encryption controls. Configured DLP policies across DOCX, XLSX, PowerPoint, and PDF files. Wrote VBScripts to bulk-apply CUI sensitivity labels and metadata to large file collections at scale.</p>
+                        <div class="project-tags">
+                            <span class="project-tag tag-blue">Microsoft DLP</span>
+                            <span class="project-tag tag-blue">VBScript</span>
+                            <span class="project-tag tag-green">Compliance</span>
+                            <span class="project-tag tag-green">CUI</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div>
+                        <div class="project-num">PROJECT_04</div>
+                        <h3>BadUSB Scripts — Flipper Zero</h3>
+                        <p>Developed BadUSB payloads for the Flipper Zero, including an active project that automates exfiltration of the Windows Pictures directory to a connected USB. Gained firsthand understanding of how quickly an attacker can steal data from an unlocked machine and the detection challenges these attacks present.</p>
+                        <div class="project-tags">
+                            <span class="project-tag tag-purple">Flipper Zero</span>
+                            <span class="project-tag tag-purple">BadUSB</span>
+                            <span class="project-tag tag-purple">Red Team</span>
+                        </div>
+                    </div>
+                    <span class="wip-badge">Active</span>
+                </div>
+
+                <div class="project-card">
+                    <div>
+                        <div class="project-num">PROJECT_05</div>
+                        <h3>Web Application Security Testing</h3>
+                        <p>Conducted security testing using OWASP Juice Shop and WebGoat to identify and exploit OWASP Top 10 vulnerabilities — SQL injection, XSS, broken authentication, and security misconfigurations. Documented findings in structured reports to simulate real pen testing engagements.</p>
+                        <div class="project-tags">
+                            <span class="project-tag tag-purple">OWASP Top 10</span>
+                            <span class="project-tag tag-purple">SQLi / XSS</span>
+                            <span class="project-tag tag-green">Web Security</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="section">
+            <div class="section-label">05 · Connect</div>
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-grid">
+                <div class="contact-text">
+                    <p>I'm open to full-time roles and opportunities in threat intelligence, SOC operations, or Blue Team security. If you're building a team that values sharp analysts who can write as well as they investigate — let's talk.</p>
+                    <div class="contact-links">
+                        <a href="mailto:andrewsauls04@gmail.com" class="contact-link">
+                            <div class="contact-link-icon">✉️</div>
+                            <div class="contact-link-info">
+                                <div class="contact-link-label">Email</div>
+                                <div class="contact-link-value">andrewsauls04@gmail.com</div>
+                            </div>
+                            <span class="contact-link-arrow">→</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/andrew-sauls/" target="_blank" class="contact-link">
+                            <div class="contact-link-icon">🔗</div>
+                            <div class="contact-link-info">
+                                <div class="contact-link-label">LinkedIn</div>
+                                <div class="contact-link-value">linkedin.com/in/andrew-sauls</div>
+                            </div>
+                            <span class="contact-link-arrow">→</span>
+                        </a>
+                        <a href="https://github.com/AKSauls" target="_blank" class="contact-link">
+                            <div class="contact-link-icon">⌥</div>
+                            <div class="contact-link-info">
+                                <div class="contact-link-label">GitHub</div>
+                                <div class="contact-link-value">github.com/AKSauls</div>
+                            </div>
+                            <span class="contact-link-arrow">→</span>
+                        </a>
+                        <a href="https://andrewsauls.netlify.app/" target="_blank" class="contact-link">
+                            <div class="contact-link-icon">🌐</div>
+                            <div class="contact-link-info">
+                                <div class="contact-link-label">Website</div>
+                                <div class="contact-link-value">andrewsauls.netlify.app</div>
+                            </div>
+                            <span class="contact-link-arrow">→</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="terminal">
+                    <div class="terminal-bar">
+                        <div class="term-dot r"></div>
+                        <div class="term-dot y"></div>
+                        <div class="term-dot g"></div>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="term-line"><span class="term-prompt">andrew@sauls</span> <span class="term-cmd">whoami</span></div>
+                        <div class="term-line"><span class="term-out">threat-intel-analyst · soc-analyst</span></div>
+                        <div class="term-line">&nbsp;</div>
+                        <div class="term-line"><span class="term-prompt">andrew@sauls</span> <span class="term-cmd">cat status.txt</span></div>
+                        <div class="term-line"><span class="term-out">open_to_work: true</span></div>
+                        <div class="term-line"><span class="term-out">focus: threat-intel | soc | blue-team</span></div>
+                        <div class="term-line"><span class="term-out">location: Wichita, KS</span></div>
+                        <div class="term-line">&nbsp;</div>
+                        <div class="term-line"><span class="term-prompt">andrew@sauls</span> <span class="term-cmd">./experience --current</span></div>
+                        <div class="term-line"><span class="term-out">[✓] DarkTower — TI Analyst II</span></div>
+                        <div class="term-line"><span class="term-out">[✓] NIAR — SOC Analyst</span></div>
+                        <div class="term-line">&nbsp;</div>
+                        <div class="term-line"><span class="term-prompt">andrew@sauls</span> <span class="term-cmd">./certs --list</span></div>
+                        <div class="term-line"><span class="term-out">[✓] CompTIA Security+</span></div>
+                        <div class="term-line"><span class="term-comment">[⟳] CySA+ (May 2026)</span></div>
+                        <div class="term-line">&nbsp;</div>
+                        <div class="term-line"><span class="term-prompt">andrew@sauls</span> <span class="blink"></span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <footer>
-        <p>© 2025 Andrew Sauls | Built with HTML & CSS</p>
+        <div class="footer-left">© 2026 Andrew Sauls · Built with HTML & CSS</div>
+        <div class="footer-right">WSU · Cybersecurity · Class of 2026</div>
     </footer>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
